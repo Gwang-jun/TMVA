@@ -36,8 +36,10 @@ namespace mytmva
     mytmva::tmvavar("trkptimba", "trkptimba := TMath::Abs((Btrk1Pt-Btrk2Pt) / (Btrk1Pt+Btrk2Pt))"                                 , "FMax", "p_{T}(1)-p_{T}(2) / p_{T}(1)+p_{T}(2)", 0   , 1)  , // 10
     mytmva::tmvavar("By"       , "By"                                                                                             , ""    , "y"                                    , -2.4, 2.4), // 11
     mytmva::tmvavar("Bmass"    , "Bmass"                                                                                          , ""    , "m_{#mu#mu#pi#pi}"                     , 3.6 , 4.0), // 12
-    mytmva::tmvavar("Btrk1Eta" , "Btrk1Eta := TMath::Abs(Btrk1Eta)"                                                               , "FMin", "K_{1} #eta"                         , -2  , 2)  , // 13
+    mytmva::tmvavar("Btrk1Eta" , "Btrk1Eta := TMath::Abs(Btrk1Eta)"                                                               , "FMin", "K_{1} #eta"                           , -2  , 2)  , // 13
     mytmva::tmvavar("Btrk2Eta" , "Btrk2Eta"                                                                                       , ""    , "#pi_{2} #eta"                         , -2  , 2)  , // 14
+    mytmva::tmvavar("Btrk1Dxysig" , "Btrk1Dxysig := TMath::Abs(Btrk1Dxy1/Btrk1DxyError1)"                                         , "FMax", "Btrk1Dxy_significance"                , 0  , 10)  , // 15
+    mytmva::tmvavar("Btrk1Dzsig" , "Btrk1Dzsig := TMath::Abs(Btrk1Dz1/Btrk1DzError1)"                                             , "FMax", "Btrk1Dz_significance"                 , 0  , 10)  , // 16
   };
 
   class varval
@@ -72,6 +74,8 @@ namespace mytmva
       fval["By"]        = j<0?0:(float)fnt->By[j];
       fval["Btrk1Eta"]  = j<0?0:(float)fnt->Btrk1Eta[j];
       fval["Btrk2Eta"]  = j<0?0:(float)fnt->Btrk2Eta[j];
+      fval["Btrk1Dxysig"] = j<0?0:(float)TMath::Abs(fnt->Btrk1Dxy1[j]/fnt->Btrk1DxyError1[j]);
+      fval["Btrk1Dzsig"] = j<0?0:(float)TMath::Abs(fnt->Btrk1Dz1[j]/fnt->Btrk1DzError1[j]);
     }
     bool checkvarlist() 
     {  

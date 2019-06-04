@@ -56,7 +56,14 @@ void mytmva::efficiencies(std::string outfname)
   TMVA::correlations(dataset.Data(), outfname.c_str());
   //mytmva::mvaeffs(dataset.Data(), outfname.c_str());
   //mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 1.e+3, 1.e+5);
-  mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 101.953617, 13730.981893); //S^prime and B^prime values, respectively
+  mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 16.801998, 59095.941497); //S^prime and B^prime values, respectively
+  //new sample and MC for 0-90%
+  //S^prime 16.801998    75.824796    215.318613   179.262906  152.054297  74.409970  12.974196 
+  //B^prime 59095.941497 55657.591854 32743.588366 5203.885727 1307.928213 191.695282 12.954612
+  //new calculation for 0-90%
+  //S^prime 22.814087    139.716880   296.019361   227.784184  209.593211  114.596774 17.199071
+  //B^prime 42358.245609 47651.133124 31177.497188 5396.739317 1610.529490 224.436488 13.905774
+  //previous calculation for 0-100%
   //S^prime 101.953617   194.055714   498.886649  208.675714  221.456861 102.726613 9.017866
   //B^prime 13730.981893 12019.550583 6573.084962 1073.808659 325.775993 41.322664  10.236871
 
