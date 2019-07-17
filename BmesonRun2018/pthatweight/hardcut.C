@@ -1,8 +1,8 @@
 #include "uti.h"
 
 Float_t criteria = 50.;
-TString inputfile="/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/crab_Bfinder_20190520_Hydjet_Pythia8_BuToJpsiK_Pthat50_1033p1_pt3tkpt0p7dls2_v2.root";
-TString outputfile="/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/crab_Bfinder_20190520_Hydjet_Pythia8_BuToJpsiK_Pthat50_1033p1_pt3tkpt0p7dls2_v2_hardcut.root";
+TString inputfile="/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/NP/crab_Bfinder_20190520_Hydjet_Pythia8_BuToJpsiK_nonprompt_Pthat50_1033p1_pt3tkpt0p7dls2.root";
+TString outputfile="/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/NP/crab_Bfinder_20190520_Hydjet_Pythia8_BuToJpsiK_nonprompt_Pthat50_1033p1_pt3tkpt0p7dls2_hardcut.root";
 
 int main()
 {
