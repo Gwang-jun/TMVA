@@ -178,14 +178,14 @@ int TMVAClassification(std::string inputSname, std::string inputBname, std::stri
   TTree* background = (TTree*)inputB->Get("Bfinder/ntKp");
   background->AddFriend("hltanalysis/HltTree");
   background->AddFriend("hiEvtAnalyzer/HiTree");
-  background->AddFriend("skimanalysis/HltTree");
+  //background->AddFriend("skimanalysis/HltTree");
   
   //For 2018 PbPb MC
   TTree* signal = (TTree*)inputS->Get("Bfinder/ntKp");
   signal->AddFriend("hltanalysis/HltTree");
   signal->AddFriend("hiEvtAnalyzer/HiTree");
-  signal->AddFriend("skimanalysis/HltTree");
   signal->AddFriend("Bfinder/ntGen");
+  //signal->AddFriend("skimanalysis/HltTree");
 
   //For 2015 PbPb, pp MC
   //TTree* signal = (TTree*)inputS->Get("ntKp");
@@ -303,8 +303,9 @@ int TMVAClassification(std::string inputSname, std::string inputBname, std::stri
   // -  for signal    : `dataloader->SetSignalWeightExpression    ("weight1*weight2");`
   // -  for background: `dataloader->SetBackgroundWeightExpression("weight1*weight2");`
   //dataloader->SetBackgroundWeightExpression("weight");
-  dataloader->SetSignalWeightExpression("pthatweight*Ncoll");
-
+  //dataloader->SetSignalWeightExpression("pthatweight*Ncoll*(1.032231*TMath::Exp(-0.000763*(PVz+3.728292)*(PVz+3.728292)))*(0.000001+0.128279*Bpt-0.003814*Bpt*Bpt+0.000071*Bpt*Bpt*Bpt)");
+  dataloader->SetSignalWeightExpression("pthatweight*Ncoll*(1.034350*TMath::Exp(-0.000844*(PVz+3.502992)*(PVz+3.502992)))*(1.095759-0.028827*Bgenpt+0.000414*Bgenpt*Bgenpt-0.000002*Bgenpt*Bgenpt*Bgenpt)");
+  
   // Apply additional cuts on the signal and background samples (can be different)
   //// TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
   //// TCut mycutb = ""; // for example: TCut mycutb = "abs(var1)<0.5";

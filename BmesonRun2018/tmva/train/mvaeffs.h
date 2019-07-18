@@ -197,11 +197,17 @@ void mytmva::mvaeffs::DrawHistograms()
       legend2->SetMargin( 0.3 );
       if(fsignificance) legend2->Draw("same");
           
-      // line to indicate maximum efficiency
+      // horizontal line to indicate maximum efficiency
       TLine* effline = new TLine( info->sSig->GetXaxis()->GetXmin(), 1, info->sSig->GetXaxis()->GetXmax(), 1 );
       effline->SetLineWidth( 1 );
       effline->SetLineColor( 1 );
-      effline->Draw();
+      //effline->Draw();
+
+      // vertical line to indicate maximum significance
+      TLine* maxsigline = new TLine(  info->sSig->GetXaxis()->GetBinCenter(info->sSig->GetMaximumBin()), 0, info->sSig->GetXaxis()->GetBinCenter(info->sSig->GetMaximumBin()), 1.1 );
+      maxsigline->SetLineWidth( 1.5 );
+      maxsigline->SetLineColor( kMagenta );
+      maxsigline->Draw();
  
       TLatex tl;
       tl.SetNDC();
@@ -211,24 +217,24 @@ void mytmva::mvaeffs::DrawHistograms()
       if(fsignificance)
         {
           Int_t maxbin = info->sSig->GetMaximumBin();
-          info->line1 = tl.DrawLatex( 0.15, 0.23, Form("For %1.0f signal and %1.0f background", fNSignal, fNBackground));
-          tl.DrawLatex( 0.15, 0.19, "events the maximum "+fFormula+" is");
+          info->line1 = tl.DrawLatex( 0.30, 0.24, Form("For %1.0f signal and %1.0f background", fNSignal, fNBackground));
+          tl.DrawLatex( 0.30, 0.20, "events the maximum "+fFormula+" is");
  
           if (info->maxSignificanceErr > 0) {
-            info->line2 = tl.DrawLatex( 0.15, 0.15, Form("%5.2f +- %4.2f when cutting at %5.2f", 
+            info->line2 = tl.DrawLatex( 0.30, 0.16, Form("%5.2f +- %4.2f when cutting at %5.2f", 
                                                          info->maxSignificance, 
                                                          info->maxSignificanceErr, 
                                                          info->sSig->GetXaxis()->GetBinCenter(maxbin)) );
           }
           else {
-            info->line2 = tl.DrawLatex( 0.15, 0.15, Form("%4.2f when cutting at %5.2f", 
+            info->line2 = tl.DrawLatex( 0.30, 0.16, Form("%4.2f when cutting at %5.2f", 
                                                          info->maxSignificance, 
                                                          info->sSig->GetXaxis()->GetBinCenter(maxbin)) );
           }
 
           // Draw second axes
-          info->rightAxis = new TGaxis(effcanvas->GetXaxis()->GetXmax(), c->GetUymin(),
-                                       effcanvas->GetXaxis()->GetXmax(), c->GetUymax(),0,1.1*info->maxSignificance,510,"+L");
+          info->rightAxis = new TGaxis(effcanvas->GetXaxis()->GetXmax(), 0, effcanvas->GetXaxis()->GetXmax(), 1.1,
+				       0, 1.10*info->maxSignificance, 510, "+L");
           info->rightAxis->SetLineColor ( signifColor );
           info->rightAxis->SetLabelColor( signifColor );
           info->rightAxis->SetTitleColor( signifColor );
@@ -238,10 +244,9 @@ void mytmva::mvaeffs::DrawHistograms()
           info->rightAxis->Draw();
         } 
 
-      if (info->methodTitle.Contains("Cuts")){
-        tl.DrawLatex( 0.13, 0.77, "Method Cuts provides a bundle of cut selections, each tuned to a");
-        tl.DrawLatex(0.13, 0.74, "different signal efficiency. Shown is the purity for each cut selection.");
-      }
+      //if (info->methodTitle.Contains("Cuts")){
+      //  tl.DrawLatex( 0.13, 0.77, "Method Cuts provides a bundle of cut selections, each tuned to a");
+      //  tl.DrawLatex(0.13, 0.74, "different signal efficiency. Shown is the purity for each cut selection.");}
 
       // save canvas to file
       c->Update();

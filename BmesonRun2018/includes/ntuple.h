@@ -111,8 +111,6 @@ bool mytmva::ntuple::passedpre(int j)
   //      ) return true;
   if(Btrk1Pt[j]>0.9 && Bpt[j]>5.0 && (BsvpvDistance[j]/BsvpvDisErr[j])>2.0 && Bchi2cl[j]>0.05 && TMath::Abs(Btrk1Eta[j])<2.4 && TMath::Abs(By[j])<2.4 && TMath::Abs(PVz[j])<15 && Bmass[j]>5 && Bmass[j]<6 && TMath::Abs(Bmumumass[j]-3.096900)<0.15 && Bmu1SoftMuID[j] && Bmu2SoftMuID[j] && Bmu1isAcc[j] && Bmu2isAcc[j] && Bmu1isTriggered[j] && Bmu2isTriggered[j] && (Btrk1PixelHit[j]+Btrk1StripHit[j])>=11 && (Btrk1Chi2ndf[j]/(Btrk1nStripLayer[j]+Btrk1nPixelLayer[j]))<0.18 && TMath::Abs(Btrk1PtErr[j]/Btrk1Pt[j])<0.1) return true;
   return false;
-  /*
-  */
 }
 
 void mytmva::ntuple::setbranchaddress()

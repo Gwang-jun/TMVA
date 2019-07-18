@@ -56,8 +56,17 @@ void mytmva::efficiencies(std::string outfname)
   TMVA::correlations(dataset.Data(), outfname.c_str());
   //mytmva::mvaeffs(dataset.Data(), outfname.c_str());
   //mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 1.e+3, 1.e+5);
-  mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 16.801998, 59095.941497); //S^prime and B^prime values, respectively
-  //new sample and MC for 0-90%
+  mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 16.921443, 59095.846448); //S^prime and B^prime values, respectively
+  //new sample and MC for 0-90%, after appropriate pthat, Ncoll, PVz and Bpt weight (pythia ref)
+  //S^prime 16.921443    75.407109    213.175034   177.773357  152.039621  74.444409  12.971996
+  //B^prime 59095.846448 55657.447266 32742.880769 5203.884706 1307.928288 191.675674 12.955197
+  //new sample and MC for 0-90%, after appropriate pthat, Ncoll, PVz and Bpt weight (Gpt weight)
+  //S^prime 17.346138    77.242990    218.711687   179.338176  152.039621  74.444409  12.971996
+  //B^prime 59095.846448 55657.447266 32742.880769 5203.884706 1307.928288 191.675674 12.955197
+  //new sample and MC for 0-90%, after pthat, Ncoll, PVz and Bpt weight
+  //S^prime 18.115898    79.545126    223.637476   180.586069  152.054297  74.409970  12.974196
+  //B^prime 59095.941497 55657.591854 32743.588366 5203.885727 1307.928213 191.695282 12.954612
+  //new sample and MC for 0-90%, after pthat and Ncoll weight
   //S^prime 16.801998    75.824796    215.318613   179.262906  152.054297  74.409970  12.974196 
   //B^prime 59095.941497 55657.591854 32743.588366 5203.885727 1307.928213 191.695282 12.954612
   //new calculation for 0-90%

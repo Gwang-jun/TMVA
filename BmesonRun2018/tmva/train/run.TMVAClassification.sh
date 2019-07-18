@@ -2,11 +2,9 @@
 
 ##
 ptmin=5 ; ptmax=7 ;
-inputs=/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/crab_Bfinder_20190520_Hydjet_Pythia8_BuToJpsiK_1033p1_pt3tkpt0p7dls2_v2_pthatweight_hardcut.root ;
-#inputs=/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/crab_Bfinder_20190221_Pythia8_BuToJpsiK_Bpt0p0_1032_NoJSON_pthatweight_hardcut_v2.root ;
+inputs=/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/crab_Bfinder_20190520_Hydjet_Pythia8_BuToJpsiK_1033p1_pt3tkpt0p7dls2_v2_addSamplePthat_pthatweight.root ;
 output=rootfiles/TMVA_X ;
 inputb=/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/crab_Bfinder_20190513_HIDoubleMuonPsiPeri_HIRun2018A_04Apr2019_v1_1033p1_GoldenJSON_327123_327564_skimhltBsize_ntKp.root ;
-#inputb=/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/crab_Bfinder_20181220_HIDoubleMuon_HIRun2018A_PromptReco_v1v2_1031_NoJSON_skimhltBsize_ntKp.root ;
 
 #inputm=$inputs ;
 inputm=$inputb ;
@@ -19,9 +17,9 @@ cut="Btrk1Pt>0.9 && Bpt>5.0 && (BsvpvDistance/BsvpvDisErr)>2.0 && Bchi2cl>0.05 &
 
 algo="BDT,BDTG,CutsGA,CutsSA"
 #algo="BDT"
-stages="6,5,15,16,8,0" # see definition below
+stages="6,5,15,8,0" # see definition below
 
-sequence=0 # if it's on, remove stages 1 by 1. 
+sequence=1 # if it's on, remove stages 1 by 1. 
 
 ## ===== do not change the lines below =====
 
