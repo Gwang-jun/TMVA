@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ###
-inputfile="/raid5/data/gwangjun/"
-outputfile="/raid5/data/gwangjun/"
+inputfile="/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/Official/Bplus/crab_Bfinder_20190624_Hydjet_Pythia8_Official_BuToJpsiK_1033p1_pt3tkpt0p7dls2_allpthat.root"
+outputfile="/mnt/T2_US_MIT/submit-hi2/scratch/gwangjun/Official/Bplus/crab_Bfinder_20190624_Hydjet_Pythia8_Official_BuToJpsiK_1033p1_pt3tkpt0p7dls2_allpthat_pthatweight.root"
 chan=3 # ([0: Bs]; [1: prompt psi']; [2: prompt X->jpsi + rho]; [3: B+])
 
 ##
