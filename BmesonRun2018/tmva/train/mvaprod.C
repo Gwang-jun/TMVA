@@ -14,7 +14,7 @@
 
 namespace mytmva
 {
-  void createmva(TTree* nttree, TFile* outf, std::vector<std::string> methods, std::vector<std::string> xmlname, std::vector<int> stages);
+  void createmva(TTree* nttree, TFile* outf, std::vector<std::string> methods, std::vector<std::string> xmlname, std::vector<int> stages, float ptmin, float ptmax);
 }
 
 const int nevt = -1;
@@ -83,11 +83,11 @@ void mvaprob(std::string inputname, std::string treename, std::string outputname
   info->Fill();
 
   outf->cd();
-  mytmva::createmva(nttree, outf, methods, xmlname, stages);
+  mytmva::createmva(nttree, outf, methods, xmlname, stages, ptmin, ptmax);
   std::cout<<"==> "<<__FUNCTION__<<": output file:"<<outputfilename<<std::endl;
 }
 
-void mytmva::createmva(TTree* nttree, TFile* outf, std::vector<std::string> methods, std::vector<std::string> xmlname, std::vector<int> stages)
+void mytmva::createmva(TTree* nttree, TFile* outf, std::vector<std::string> methods, std::vector<std::string> xmlname, std::vector<int> stages, float ptmin, float ptmax)
 {
   //
   // mytmva::ntuple* nt = new mytmva::ntuple(nttree);
@@ -125,7 +125,7 @@ void mytmva::createmva(TTree* nttree, TFile* outf, std::vector<std::string> meth
   TTree* mvatree = new TTree("mva", "");
   mvatree->Branch("mvaBsize", &mvaBsize);
   for(int mm=0; mm<nmeth; mm++)
-    { mvatree->Branch(methods[mm].c_str(), __mvaval[mm], Form("%s[mvaBsize]/F", methods[mm].c_str())); }
+    { mvatree->Branch(Form("%s_%s_%s",methods[mm].c_str(),xjjc::number_to_string(ptmin).c_str(),xjjc::number_to_string(ptmax).c_str()), __mvaval[mm], Form("%s_%s_%s[mvaBsize]/F",methods[mm].c_str(),xjjc::number_to_string(ptmin).c_str(),xjjc::number_to_string(ptmax).c_str())); }
   bool __mvapref[MAX_XB];
   mvatree->Branch("mvapref", __mvapref, "mvapref[mvaBsize]/O");
   

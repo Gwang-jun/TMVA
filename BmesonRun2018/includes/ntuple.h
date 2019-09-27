@@ -21,7 +21,7 @@ namespace mytmva
     ~ntuple() { fnt = 0; }
     bool passedpre(int j);
     bool passedsig(int j) { return Bgen[j]==23333; }
-    bool passedbkg(int j) { return ((TMath::Abs(Bmass[j]-5.27932)>0.2) || (TMath::Abs(Bmass[j]-5.27932)<0.3)); }
+    bool passedbkg(int j) { return ((TMath::Abs(Bmass[j]-5.27932)>0.15) || (TMath::Abs(Bmass[j]-5.27932)<0.25)); }
     bool isweight() { return fweight; }
 
     TTree* getnt() { return fnt; }
@@ -103,13 +103,7 @@ namespace mytmva
 
 bool mytmva::ntuple::passedpre(int j)
 {
-  //  if( Bmu1TMOneStationTight[j] && Bmu1InPixelLayer[j]>0 && (Bmu1InPixelLayer[j]+Bmu1InStripLayer[j])>5 && Bmu1dxyPV[j]<0.3 && Bmu1dzPV[j]<20 && Bmu1isGlobalMuon[j] && ((TMath::Abs(Bmu1eta[j])<1.2 && Bmu1pt[j]>3.5) || (TMath::Abs(Bmu1eta[j])>1.2 && TMath::Abs(Bmu1eta[j])<2.1 && Bmu1pt[j]>(5.77-1.8*TMath::Abs(Bmu1eta[j]))) || (TMath::Abs(Bmu1eta[j])>2.1 && TMath::Abs(Bmu1eta[j])<2.4 && Bmu1pt[j]>1.8)) && //mu1
-  //Bmu2TMOneStationTight[j] && Bmu2InPixelLayer[j]>0 && (Bmu2InPixelLayer[j]+Bmu2InStripLayer[j])>5 && Bmu2dxyPV[j]<0.3 && Bmu2dzPV[j]<20 && Bmu2isGlobalMuon[j] && ((TMath::Abs(Bmu2eta[j])<1.2 && Bmu2pt[j]>3.5) || (TMath::Abs(Bmu2eta[j])>1.2 && TMath::Abs(Bmu2eta[j])<2.1 && Bmu2pt[j]>(5.77-1.8*TMath::Abs(Bmu2eta[j]))) || (TMath::Abs(Bmu2eta[j])>2.1 && TMath::Abs(Bmu2eta[j])<2.4 && Bmu2pt[j]>1.8)) && // mu2
-  //TMath::Abs(Bmumumass[j]-3.096900)<0.15 && // jpsi
-  //(Btrk1PixelHit[j]+Btrk1StripHit[j])>=11 && (Btrk1Chi2ndf[j]/(Btrk1nStripLayer[j]+Btrk1nPixelLayer[j]))<0.18 && Btrk1highPurity[j] && TMath::Abs(Btrk1Eta[j])<2.4 && Btrk1Pt[j]>1.0 && TMath::Abs(Btrk1PtErr[j]/Btrk1Pt[j])<0.1 && // trk1
-  //Bpt[j]>5.0 && (BsvpvDistance[j]/BsvpvDisErr[j])>2.0 && TMath::Abs(PVz[j])<15 && TMath::Abs(By[j])<2.4 && Bchi2cl[j]>0.05 // B
-  //      ) return true;
-  if(Btrk1Pt[j]>0.9 && Bpt[j]>5.0 && (BsvpvDistance[j]/BsvpvDisErr[j])>2.0 && Bchi2cl[j]>0.05 && TMath::Abs(Btrk1Eta[j])<2.4 && TMath::Abs(By[j])<2.4 && TMath::Abs(PVz[j])<15 && Bmass[j]>5 && Bmass[j]<6 && TMath::Abs(Bmumumass[j]-3.096900)<0.15 && Bmu1SoftMuID[j] && Bmu2SoftMuID[j] && Bmu1isAcc[j] && Bmu2isAcc[j] && Bmu1isTriggered[j] && Bmu2isTriggered[j] && (Btrk1PixelHit[j]+Btrk1StripHit[j])>=11 && (Btrk1Chi2ndf[j]/(Btrk1nStripLayer[j]+Btrk1nPixelLayer[j]))<0.18 && TMath::Abs(Btrk1PtErr[j]/Btrk1Pt[j])<0.1) return true;
+  if(Btrk1Pt[j]>0.9 && Bpt[j]>5.0 && (BsvpvDistance[j]/BsvpvDisErr[j])>2.0 && Bchi2cl[j]>0.05 && TMath::Abs(Btrk1Eta[j])<2.4 && TMath::Abs(By[j])<2.4 && TMath::Abs(PVz[j])<15 && Bmass[j]>5 && Bmass[j]<6 && TMath::Abs(Bmumumass[j]-3.096900)<0.15 && Bmu1SoftMuID[j] && Bmu2SoftMuID[j] && ((TMath::Abs(Bmu1eta[j])<1.2 && Bmu1pt[j]>3.5) || (TMath::Abs(Bmu1eta[j])>1.2 && TMath::Abs(Bmu1eta[j])<2.1 && Bmu1pt[j]>5.47-1.89*TMath::Abs(Bmu1eta[j])) || (TMath::Abs(Bmu1eta[j])>2.1 && TMath::Abs(Bmu1eta[j])<2.4 && Bmu1pt[j]>1.5)) && ((TMath::Abs(Bmu2eta[j])<1.2 && Bmu2pt[j]>3.5) || (TMath::Abs(Bmu2eta[j])>1.2 && TMath::Abs(Bmu2eta[j])<2.1 && Bmu2pt[j]>5.47-1.89*TMath::Abs(Bmu2eta[j])) || (TMath::Abs(Bmu2eta[j])>2.1 && TMath::Abs(Bmu2eta[j])<2.4 && Bmu2pt[j]>1.5)) && Bmu1isTriggered[j] && Bmu2isTriggered[j] && (Btrk1PixelHit[j]+Btrk1StripHit[j])>=11 && (Btrk1Chi2ndf[j]/(Btrk1nStripLayer[j]+Btrk1nPixelLayer[j]))<0.18 && TMath::Abs(Btrk1PtErr[j]/Btrk1Pt[j])<0.1) return true;
   return false;
 }
 

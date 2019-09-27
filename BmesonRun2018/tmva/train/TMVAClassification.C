@@ -96,8 +96,8 @@ int TMVAClassification(std::string inputSname, std::string inputBname, std::stri
   Use["MLPBNN2"]         = 0; // Recommended ANN with BFGS training method and bayesian regulator + 2 layer
   Use["CFMlpANN"]        = 0; // Depreciated ANN from ALEPH
   Use["TMlpANN"]         = 0; // ROOT's own ANN
-  Use["DNN"]             = 0;     // Deep Neural Network
-  Use["DNN2"]            = 0;     // Deep Neural Network + 4 layer
+  Use["DNN"]             = 0; // Deep Neural Network
+  Use["DNN2"]            = 0; // Deep Neural Network + 4 layer
   Use["DNN_GPU"]         = 0; // CUDA-accelerated DNN training.
   Use["DNN_CPU"]         = 0; // Multi-core accelerated DNN.
   //
@@ -178,14 +178,14 @@ int TMVAClassification(std::string inputSname, std::string inputBname, std::stri
   TTree* background = (TTree*)inputB->Get("Bfinder/ntKp");
   background->AddFriend("hltanalysis/HltTree");
   background->AddFriend("hiEvtAnalyzer/HiTree");
-  //background->AddFriend("skimanalysis/HltTree");
+  background->AddFriend("skimanalysis/HltTree");
   
   //For 2018 PbPb MC
   TTree* signal = (TTree*)inputS->Get("Bfinder/ntKp");
   signal->AddFriend("hltanalysis/HltTree");
   signal->AddFriend("hiEvtAnalyzer/HiTree");
   signal->AddFriend("Bfinder/ntGen");
-  //signal->AddFriend("skimanalysis/HltTree");
+  signal->AddFriend("skimanalysis/HltTree");
 
   //For 2015 PbPb, pp MC
   //TTree* signal = (TTree*)inputS->Get("ntKp");
@@ -304,7 +304,7 @@ int TMVAClassification(std::string inputSname, std::string inputBname, std::stri
   // -  for background: `dataloader->SetBackgroundWeightExpression("weight1*weight2");`
   //dataloader->SetBackgroundWeightExpression("weight");
   //dataloader->SetSignalWeightExpression("pthatweight*Ncoll*(1.032231*TMath::Exp(-0.000763*(PVz+3.728292)*(PVz+3.728292)))*(0.000001+0.128279*Bpt-0.003814*Bpt*Bpt+0.000071*Bpt*Bpt*Bpt)");
-  dataloader->SetSignalWeightExpression("pthatweight*Ncoll*(1.034350*TMath::Exp(-0.000844*(PVz+3.502992)*(PVz+3.502992)))*(1.095759-0.028827*Bgenpt+0.000414*Bgenpt*Bgenpt-0.000002*Bgenpt*Bgenpt*Bgenpt)");
+  dataloader->SetSignalWeightExpression("pthatweight*Ncoll*((TMath::Gaus(PVz,0.427450,4.873825)/(sqrt(2*3.14159)*4.873825))/(TMath::Gaus(PVz,0.909938,4.970989)/(sqrt(2*3.14159)*4.970989)))*((3.506006+0.963473*Bgenpt+-0.258731*Bgenpt*Bgenpt)*TMath::Exp(-0.386065*Bgenpt)+1.139897)");
   
   // Apply additional cuts on the signal and background samples (can be different)
   //// TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
@@ -548,7 +548,7 @@ int TMVAClassification(std::string inputSname, std::string inputBname, std::stri
       // Cuda implementation.
       if (Use["DNN_GPU"]) {
         TString gpuOptions = dnnOptions + ":Architecture=GPU";
-        factory->BookMethod(dataloader, TMVA::Types::kDNN, "DNN GPU", gpuOptions);
+        factory->BookMethod(dataloader, TMVA::Types::kDNN, "DNN_GPU", gpuOptions);
       }
       // Multi-core CPU implementation.
       if (Use["DNN_CPU"]) {
@@ -576,7 +576,8 @@ int TMVAClassification(std::string inputSname, std::string inputBname, std::stri
 
   if (Use["BDT"])  // Adaptive Boost
     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",
-                         "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
+			 "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
+  //"!H:!V:NTrees=8000:MinNodeSize=2.5%:MaxDepth=4:BoostType=AdaBoost:AdaBoostBeta=0.6:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=100" );
 
   if (Use["BDTB"]) // Bagging
     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDTB",

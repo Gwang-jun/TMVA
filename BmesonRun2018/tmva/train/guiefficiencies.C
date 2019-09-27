@@ -56,29 +56,14 @@ void mytmva::efficiencies(std::string outfname)
   TMVA::correlations(dataset.Data(), outfname.c_str());
   //mytmva::mvaeffs(dataset.Data(), outfname.c_str());
   //mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 1.e+3, 1.e+5);
-  mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 18.391521, 86468.725341); //S^prime and B^prime values, respectively
+  mytmva::mvaeffs(dataset.Data(), outfname.c_str(), 76.27, 237.12); //S^prime and B^prime values, respectively
   /*
-  Official Data and MC for 0-90%, after all weights
-  S^prime 
-  B^prime
-  new sample and MC for 0-90%, after appropriate pthat, Ncoll, PVz and Bpt weight (pythia ref)
-  S^prime 16.921443    75.407109    213.175034   177.773357  152.039621  74.444409  12.971996
-  B^prime 59095.846448 55657.447266 32742.880769 5203.884706 1307.928288 191.675674 12.955197
-  new sample and MC for 0-90%, after appropriate pthat, Ncoll, PVz and Bpt weight (Gpt weight)
-  S^prime 17.346138    77.242990    218.711687   179.338176  152.039621  74.444409  12.971996
-  B^prime 59095.846448 55657.447266 32742.880769 5203.884706 1307.928288 191.675674 12.955197
-  new sample and MC for 0-90%, after pthat, Ncoll, PVz and Bpt weight
-  S^prime 18.115898    79.545126    223.637476   180.586069  152.054297  74.409970  12.974196
-  B^prime 59095.941497 55657.591854 32743.588366 5203.885727 1307.928213 191.695282 12.954612
-  new sample and MC for 0-90%, after pthat and Ncoll weight
-  S^prime 16.801998    75.824796    215.318613   179.262906  152.054297  74.409970  12.974196 
-  B^prime 59095.941497 55657.591854 32743.588366 5203.885727 1307.928213 191.695282 12.954612
-  new calculation for 0-90%
-  S^prime 22.814087    139.716880   296.019361   227.784184  209.593211  114.596774 17.199071
-  B^prime 42358.245609 47651.133124 31177.497188 5396.739317 1610.529490 224.436488 13.905774
-  previous calculation for 0-100%
-  S^prime 101.953617   194.055714   498.886649  208.675714  221.456861 102.726613 9.017866
-  B^prime 13730.981893 12019.550583 6573.084962 1073.808659 325.775993 41.322664  10.236871
+    New Bpt weight and interbinnings
+    S^prime 11.20  90.92    266.22   187.49  234.09  76.27  35.13 11.87
+    B^prime 127.92 94436.68 49741.74 7575.04 1964.87 237.12 28.11 10.43
+    New Bpt weight and Muon selections
+    S^prime 20.80     82.88    244.98   172.21  235.14  112.34 13.66  
+    B^prime 122868.75 94285.03 49713.63 7575.41 1963.65 265.15 18.82
   */
 
   gSystem->Exec(Form("rm %s/plots/*.png", dataset.Data()));

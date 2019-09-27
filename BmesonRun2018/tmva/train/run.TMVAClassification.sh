@@ -1,23 +1,23 @@
 #!/bin/bash
 
 ##
-ptmin=5 ; ptmax=7 ;
+ptmin=30 ; ptmax=40 ;
 inputs=/raid5/data/gwangjun/crab_Bfinder_20190624_Hydjet_Pythia8_Official_BuToJpsiK_1033p1_pt3tkpt0p7dls2_allpthat_pthatweight.root ;
-output=rootfiles/TMVA_X ;
+output=rootfiles/TMVA_Bplus ;
 inputb=/raid5/data/gwangjun/crab_Bfinder_20190513_HIDoubleMuon__PsiPeri__HIRun2018A_04Apr2019_v1_1033p1_GoldenJSON_skimhltBsize_ntKp.root ;
 
 #inputm=$inputs ;
 inputm=$inputb ;
 # outputmva=/mnt/hadoop/cms/store/user/gwangjun/tmva ;
 # outputmva=/afs/lns.mit.edu/user/gwangjun/CMSSW_10_3_2/src/BmesonRun2018/tmva/train ;
-outputmva=/raid5/data/gwangjun/ ;
+outputmva=/home/gwangjun/BmesonRun2018/tmva/train ;
 
 # prefilter
-cut="pprimaryVertexFilter && phfCoincFilter2Th4 && pclusterCompatibilityFilter && Btrk1Pt>0.9 && Bpt>5.0 && (BsvpvDistance/BsvpvDisErr)>2.0 && Bchi2cl>0.05 && TMath::Abs(Btrk1Eta)<2.4 && TMath::Abs(By)<2.4 && TMath::Abs(PVz)<15 && Bmass>5 && Bmass<6 && TMath::Abs(Bmumumass-3.096900)<0.15 && Bmu1SoftMuID && Bmu2SoftMuID && Bmu1isAcc && Bmu2isAcc && Bmu1isTriggered && Bmu2isTriggered && (Btrk1PixelHit+Btrk1StripHit)>=11 && (Btrk1Chi2ndf/(Btrk1nStripLayer+Btrk1nPixelLayer))<0.18 && TMath::Abs(Btrk1PtErr/Btrk1Pt)<0.1"
+cut="pprimaryVertexFilter && phfCoincFilter2Th4 && pclusterCompatibilityFilter && Btrk1Pt>0.9 && Bpt>5.0 && (BsvpvDistance/BsvpvDisErr)>2.0 && Bchi2cl>0.05 && TMath::Abs(Btrk1Eta)<2.4 && TMath::Abs(By)<2.4 && TMath::Abs(PVz)<15 && Bmass>5 && Bmass<6 && TMath::Abs(Bmumumass-3.096900)<0.15 && Bmu1SoftMuID && Bmu2SoftMuID && ((TMath::Abs(Bmu1eta)<1.2 && Bmu1pt>3.5) || (TMath::Abs(Bmu1eta)>1.2 && TMath::Abs(Bmu1eta)<2.1 && Bmu1pt>5.47-1.89*TMath::Abs(Bmu1eta)) || (TMath::Abs(Bmu1eta)>2.1 && TMath::Abs(Bmu1eta)<2.4 && Bmu1pt>1.5)) && ((TMath::Abs(Bmu2eta)<1.2 && Bmu2pt>3.5) || (TMath::Abs(Bmu2eta)>1.2 && TMath::Abs(Bmu2eta)<2.1 && Bmu2pt>5.47-1.89*TMath::Abs(Bmu2eta)) || (TMath::Abs(Bmu2eta)>2.1 && TMath::Abs(Bmu2eta)<2.4 && Bmu2pt>1.5)) && Bmu1isTriggered && Bmu2isTriggered && (Btrk1PixelHit+Btrk1StripHit)>=11 && (Btrk1Chi2ndf/(Btrk1nStripLayer+Btrk1nPixelLayer))<0.18 && TMath::Abs(Btrk1PtErr/Btrk1Pt)<0.1"
 
-algo="BDT,BDTG,CutsGA,CutsSA"
-#algo="BDT"
-stages="6,5,15,8,0" # see definition below
+#algo="CutsGA,BDT,BDTD,BDTG"
+algo="CutsGA,BDT"
+stages="6,4,8,0,13,15" # see definition below
 
 sequence=0 # if it's on, remove stages 1 by 1. 
 
@@ -45,7 +45,7 @@ varlist=(
 
 
 cuts="${cut} && Bgen==23333"
-cutb="${cut} && ((TMath::Abs(Bmass-5.27932)>0.2) || (TMath::Abs(Bmass-5.27932)<0.3))" # Bmass_pdg=5.27932GeV, sideband 0.2 ~ 0.3 for each side.
+cutb="${cut} && ((TMath::Abs(Bmass-5.27932)>0.15) || (TMath::Abs(Bmass-5.27932)<0.25))" # Bmass_pdg=5.27932GeV, sideband 0.15 ~ 0.25 for each side.
 # rootfiles=rootfiles
 
 ## ===== do not do not do not change the lines below =====

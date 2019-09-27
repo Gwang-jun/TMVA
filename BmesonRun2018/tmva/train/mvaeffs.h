@@ -2,6 +2,13 @@
 #define _MVAEFFS_H_
 
 #include "TMVA/mvaeffs.h"
+#include <TFormula.h>
+
+#include "Math/SpecFunc.h"
+#include "TSystem.h"
+#include "Math/QuantFuncMathCore.h"
+
+Float_t alpha = 1-0.6827;
 
 namespace mytmva
 {
@@ -9,6 +16,7 @@ namespace mytmva
   {
   public:
     mvaeffs(TString ds, TString fin, Float_t ns=0, Float_t nb=0, TString formula="S/sqrt(S+B)", Bool_t useTMVAStyle=kTRUE);
+    //mvaeffs(TString ds, TString fin, Float_t ns=0, Float_t nb=0, TString formula="S/sqrt(ROOT::Math::gamma_quantile((1-0.6827)/2.,S+B,1.))", Bool_t useTMVAStyle=kTRUE);
     bool isvalid() { return fvalid; }
 
   private:
@@ -85,7 +93,7 @@ void mytmva::mvaeffs::ReadHistograms(TFile* file)
          
       TMVA::MethodInfo* info = new TMVA::MethodInfo();
       TDirectory* titDir = (TDirectory *)titkey->ReadObj();
- 
+      
       TMVA::TMVAGlob::GetMethodName(info->methodName,key);
       TMVA::TMVAGlob::GetMethodTitle(info->methodTitle,titDir);        
       if (info->methodTitle.Length() > maxLenTitle) maxLenTitle = info->methodTitle.Length();
@@ -98,7 +106,7 @@ void mytmva::mvaeffs::ReadHistograms(TFile* file)
       info->origSigE = dynamic_cast<TH1*>(titDir->Get( hname + "_effS" ));
       info->origBgdE = dynamic_cast<TH1*>(titDir->Get( hname + "_effB" ));      
       if (info->origSigE==0 || info->origBgdE==0) { delete info; continue; }
- 
+      
       info->SetResultHists();
       fInfoList->Add(info);
     }
@@ -115,7 +123,7 @@ void mytmva::mvaeffs::DrawHistograms()
   // define Canvas layout here!
   const Int_t width = 600;   // size of canvas
   Int_t signifColor = TColor::GetColor( "#00aa00" );
- 
+  
   TIter next(fInfoList);
   TMVA::MethodInfo* info(0);
   while ( (info = (TMVA::MethodInfo*)next()) ) 
@@ -126,12 +134,12 @@ void mytmva::mvaeffs::DrawHistograms()
                                 countCanvas*50+200, countCanvas*20, width, Int_t(width*0.78) ); 
       info->canvas = c;
       c->cd();
- 
+      
       // draw grid
       c->SetGrid(1);
       c->SetTickx(0);
       c->SetTicky(0);
-
+      
       // TMVA::TMVAGlob::SetTMVAStyle(); 
       TStyle *TMVAStyle = gROOT->GetStyle("Plain"); // our style is based on Plain
       TMVAStyle->SetLineStyleString( 5, "[32 22]" );
@@ -154,15 +162,15 @@ void mytmva::mvaeffs::DrawHistograms()
         effcanvas->GetXaxis()->SetTitle( TString("Cut value applied on ") + info->methodTitle + " output" );
       }
       effcanvas->GetYaxis()->SetTitle( "Efficiency (Purity)" );
-
+      
       TMVA::TMVAGlob::SetFrameStyle( effcanvas );
- 
+      
       c->SetTicks(0,0);
       c->SetRightMargin ( 2.0 );
- 
+      
       effcanvas->SetMaximum(1.1);
       effcanvas->Draw("histl");
-
+      
       //
       // if(fsignificance) info->effpurS->Draw("samehistl");
       // if(fsignificance) info->purS->Draw("samehistl");      
@@ -192,7 +200,9 @@ void mytmva::mvaeffs::DrawHistograms()
       // legend2->SetFillStyle( 1 );
       // legend2->AddEntry(info->purS,"Signal purity","L");
       // legend2->AddEntry(info->effpurS,"Signal efficiency*purity","L");
-      legend2->AddEntry(info->sSig,fFormula.Data(),"L");
+      //legend2->AddEntry(info->sSig,fFormula.Data(),"L");
+      legend2->AddEntry(info->sSig,"S/sqrt(S+B)","L");
+      //legend2->AddEntry(info->sSig,"New significance function","L");
       legend2->SetBorderSize(0); // 1
       legend2->SetMargin( 0.3 );
       if(fsignificance) legend2->Draw("same");
@@ -218,7 +228,9 @@ void mytmva::mvaeffs::DrawHistograms()
         {
           Int_t maxbin = info->sSig->GetMaximumBin();
           info->line1 = tl.DrawLatex( 0.30, 0.24, Form("For %1.0f signal and %1.0f background", fNSignal, fNBackground));
-          tl.DrawLatex( 0.30, 0.20, "events the maximum "+fFormula+" is");
+          //tl.DrawLatex( 0.30, 0.20, "events the maximum "+fFormula+" is");
+	  tl.DrawLatex( 0.30, 0.20, "events the maximum S/sqrt(S+B) is");
+	  //tl.DrawLatex( 0.30, 0.20, "Maximum S/sqrt(gamma_quantile(alpha/2,S+B,1)) is");
  
           if (info->maxSignificanceErr > 0) {
             info->line2 = tl.DrawLatex( 0.30, 0.16, Form("%5.2f +- %4.2f when cutting at %5.2f", 
@@ -253,7 +265,7 @@ void mytmva::mvaeffs::DrawHistograms()
  
       // switche
       const Bool_t Save_Images = kTRUE;
- 
+      
       if (Save_Images) {
         TMVA::TMVAGlob::imgconv( c, Form("%s/plots/mvaeffs_%s%s",dataset.Data(), info->methodTitle.Data(), fsignificance?"":"_nosig") ); 
       }
@@ -281,9 +293,10 @@ void mytmva::mvaeffs::UpdateSignificanceHists()
       Float_t eS = info->origSigE->GetBinContent( i );
       Float_t S = eS * fNSignal;
       Float_t B = info->origBgdE->GetBinContent( i ) * fNBackground;
-      info->purS->SetBinContent( i, (S+B==0)?0:S/(S+B) );
+      //info->purS->SetBinContent( i, (S+B==0)?0:S/(S+B) );
       
       Double_t sig = (S+B==0)?0:f.Eval(S,B);
+      //Double_t sig = (S+B<=2)?0:f.Eval(S,B);
       if (sig > maxSig) {
         maxSig    = sig;
         if (fFormula== "S/sqrt(B)" && (S>0 && B>0)) {
@@ -291,7 +304,7 @@ void mytmva::mvaeffs::UpdateSignificanceHists()
         }
       }
       info->sSig->SetBinContent( i, sig );
-      info->effpurS->SetBinContent( i, eS*info->purS->GetBinContent( i ) );
+      //info->effpurS->SetBinContent( i, eS*info->purS->GetBinContent( i ) );
     }
        
     info->maxSignificance    = info->sSig->GetMaximum();
